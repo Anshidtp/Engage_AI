@@ -12,7 +12,7 @@ from app.core.exceptions import NewsSearchError, APIKeyError
 
 logger = get_logger(__name__)
 
-class NewsAgent:
+class NewsSearchAgent:
     """Agent to handle news searching using Google Custom Search or SerpAPI."""
     def __init__(self):
         self.serp_api_key = settings.serpapi_api_key
