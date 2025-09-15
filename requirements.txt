@@ -1,1 +1,8 @@
 pydantic
+aiohttp
+requests
+langchain
+langchain-community
+python-dotenv
+google-search-results
+python-multipart
