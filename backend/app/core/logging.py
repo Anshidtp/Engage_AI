@@ -3,7 +3,7 @@ import sys
 from typing import Any, Dict
 from datetime import datetime
 
-from app.core.config import settings
+from backend.app.core.config import settings
 
 
 class ColoredFormatter(logging.Formatter):

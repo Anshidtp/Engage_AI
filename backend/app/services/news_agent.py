@@ -5,10 +5,10 @@ import aiohttp
 import requests
 from serpapi import GoogleSearch
 
-from app.core.config import settings
-from app.core.logging import get_logger
-from app.models.response import NewsSource
-from app.core.exceptions import NewsSearchError, APIKeyError
+from backend.app.core.config import settings
+from backend.app.core.logging import get_logger
+from backend.app.models.response import NewsSource
+from backend.app.core.exceptions import NewsSearchError, APIKeyError
 
 logger = get_logger(__name__)
 

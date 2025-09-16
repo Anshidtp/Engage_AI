@@ -1,10 +1,10 @@
 from typing import Dict, Any
-from app.services.linkedin_agent import AIAgent
-from app.services.news_agent import NewsSearchAgent
-from app.models.requests import GeneratePostRequest
-from app.models.response import GeneratePostResponse, NewsSource
-from app.core.logging import get_logger
-from app.core.exceptions import AppException
+from backend.app.services.linkedin_agent import AIAgent
+from backend.app.services.news_agent import NewsSearchAgent
+from backend.app.models.requests import GeneratePostRequest
+from backend.app.models.response import GeneratePostResponse, NewsSource
+from backend.app.core.logging import get_logger
+from backend.app.core.exceptions import AppException
 
 logger = get_logger(__name__)
 

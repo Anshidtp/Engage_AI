@@ -7,3 +7,5 @@ python-dotenv
 google-search-results
 python-multipart
 langchain_google_genai
+fastapi[standard]
+uvicorn
