@@ -7,7 +7,7 @@ from serpapi import GoogleSearch
 
 from backend.app.core.config import settings
 from backend.app.core.logging import get_logger
-from backend.app.models.response import NewsSource
+#from backend.app.models.response import NewsSource
 from backend.app.core.exceptions import NewsSearchError, APIKeyError
 
 logger = get_logger(__name__)
@@ -17,7 +17,7 @@ class NewsSearchAgent:
     def __init__(self):
         self.serp_api_key = settings.serpapi_api_key
 
-    async def search_news(self, topic: str, limit: int = 5) -> List[NewsSource]:
+    async def search_news(self, topic: str, limit: int = 5) -> List[str]:
         """
         Search for recent news articles on a topic.
         
@@ -45,7 +45,7 @@ class NewsSearchAgent:
             logger.error(f"News search failed: {str(e)}")
             raise NewsSearchError(f"Failed to search news: {str(e)}")
         
-    async def _search_with_serpapi(self, topic: str, limit: int) -> List[NewsSource]:
+    async def _search_with_serpapi(self, topic: str, limit: int) -> List[str]:
         """Search using SerpAPI."""
         try:
             # Calculate date range for recent news
@@ -69,93 +69,106 @@ class NewsSearchAgent:
             results = await loop.run_in_executor(None, search.get_dict)
             
             news_sources = []
-            
+
             if "news_results" in results:
                 for result in results["news_results"][:limit]:
-                    source = NewsSource(
-                        title=result.get("title", ""),
-                        url=result.get("link", ""),
-                        source_name=result.get("source", ""),
-                        snippet=result.get("snippet", ""),
-                        published_date=self._parse_date(result.get("date"))
-                    )
-                    news_sources.append(source)
+                    news_sources.append(result.get("link", ""))
+            
+            # if "news_results" in results:
+            #     for result in results["news_results"][:limit]:
+            #         source = NewsSource(
+            #             title=result.get("title", ""),
+            #             url=result.get("link", ""),
+            #             source_name=result.get("source", ""),
+            #             snippet=result.get("snippet", ""),
+            #             published_date=self._parse_date(result.get("date"))
+            #         )
+            #         news_sources.append(source)
             
             logger.info(f"Found {len(news_sources)} news articles")
-            return news_sources
+            return news_sources if news_sources else self._get_fallback_urls(topic)
             
         except Exception as e:
             logger.error(f"SerpAPI search failed: {str(e)}")
             raise NewsSearchError(f"SerpAPI search failed: {str(e)}")
+        
+    def _get_fallback_urls(self, topic: str) -> List[str]:
+        """Return fallback URLs if no news found."""
+        logger.info("Using fallback news URLs")
+        return [
+            f"https://news.google.com/search?q={topic.replace(' ', '%20')}",
+            f"https://www.bing.com/news/search?q={topic.replace(' ', '%20')}",
+            f"https://www.reuters.com/search/news?blob={topic.replace(' ', '%20')}"
+        ]
     
-    async def _search_fallback(self, topic: str, limit: int) -> List[NewsSource]:
-        """Fallback search method using NewsAPI or similar free service."""
-        logger.warning("Using fallback news search method")
+    # async def _search_fallback(self, topic: str, limit: int) -> List[NewsSource]:
+    #     """Fallback search method using NewsAPI or similar free service."""
+    #     logger.warning("Using fallback news search method")
         
-        # This is a simplified fallback - you might want to integrate with
-        # other free news APIs like NewsAPI, or implement web scraping
-        news_sources = []
+    #     # This is a simplified fallback - you might want to integrate with
+    #     # other free news APIs like NewsAPI, or implement web scraping
+    #     news_sources = []
         
-        try:
-            # Example using a free news aggregator API
-            # You can replace this with any other free news API
+    #     try:
+    #         # Example using a free news aggregator API
+    #         # You can replace this with any other free news API
             
-            async with aiohttp.ClientSession() as session:
-                # Using a hypothetical free news API endpoint
-                url = f"https://api.example-news.com/search"
-                params = {
-                    "q": topic,
-                    "limit": limit,
-                    "category": "general"
-                }
+    #         async with aiohttp.ClientSession() as session:
+    #             # Using a hypothetical free news API endpoint
+    #             url = f"https://api.example-news.com/search"
+    #             params = {
+    #                 "q": topic,
+    #                 "limit": limit,
+    #                 "category": "general"
+    #             }
                 
-                async with session.get(url, params=params) as response:
-                    if response.status == 200:
-                        data = await response.json()
+    #             async with session.get(url, params=params) as response:
+    #                 if response.status == 200:
+    #                     data = await response.json()
                         
-                        for article in data.get("articles", [])[:limit]:
-                            source = NewsSource(
-                                title=article.get("title", ""),
-                                url=article.get("url", ""),
-                                source_name=article.get("source", ""),
-                                snippet=article.get("description", ""),
-                                published_date=self._parse_date(article.get("publishedAt"))
-                            )
-                            news_sources.append(source)
+    #                     for article in data.get("articles", [])[:limit]:
+    #                         source = NewsSource(
+    #                             title=article.get("title", ""),
+    #                             url=article.get("url", ""),
+    #                             source_name=article.get("source", ""),
+    #                             snippet=article.get("description", ""),
+    #                             published_date=self._parse_date(article.get("publishedAt"))
+    #                         )
+    #                         news_sources.append(source)
             
-        except Exception as e:
-            logger.warning(f"Fallback search failed: {str(e)}")
+    #     except Exception as e:
+    #         logger.warning(f"Fallback search failed: {str(e)}")
             
-            # Last resort: return mock data for demo purposes
-            news_sources = [
-                NewsSource(
-                    title=f"Latest developments in {topic}",
-                    url=f"https://example.com/news/{topic.lower().replace(' ', '-')}",
-                    source_name="Tech News Daily",
-                    snippet=f"Recent updates and trends in {topic} that are shaping the industry...",
-                    published_date=datetime.now() - timedelta(hours=2)
-                )
-            ]
+    #         # Last resort: return mock data for demo purposes
+    #         news_sources = [
+    #             NewsSource(
+    #                 title=f"Latest developments in {topic}",
+    #                 url=f"https://example.com/news/{topic.lower().replace(' ', '-')}",
+    #                 source_name="Tech News Daily",
+    #                 snippet=f"Recent updates and trends in {topic} that are shaping the industry...",
+    #                 published_date=datetime.now() - timedelta(hours=2)
+    #             )
+    #         ]
             
-            logger.info("Using fallback mock news data")
+    #         logger.info("Using fallback mock news data")
         
-        return news_sources
+    #     return news_sources
     
-    def _parse_date(self, date_str: Optional[str]) -> Optional[datetime]:
-        """Parse date string to datetime object."""
-        if not date_str:
-            return None
+    # def _parse_date(self, date_str: Optional[str]) -> Optional[datetime]:
+    #     """Parse date string to datetime object."""
+    #     if not date_str:
+    #         return None
             
-        try:
-            # Handle various date formats
-            for fmt in ["%Y-%m-%d", "%Y-%m-%dT%H:%M:%S", "%Y-%m-%dT%H:%M:%SZ"]:
-                try:
-                    return datetime.strptime(date_str, fmt)
-                except ValueError:
-                    continue
+    #     try:
+    #         # Handle various date formats
+    #         for fmt in ["%Y-%m-%d", "%Y-%m-%dT%H:%M:%S", "%Y-%m-%dT%H:%M:%SZ"]:
+    #             try:
+    #                 return datetime.strptime(date_str, fmt)
+    #             except ValueError:
+    #                 continue
                     
-            # If no format matches, return None
-            return None
+    #         # If no format matches, return None
+    #         return None
             
-        except Exception:
-            return None
+    #     except Exception:
+    #         return None

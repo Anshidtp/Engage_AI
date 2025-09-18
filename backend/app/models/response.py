@@ -9,8 +9,7 @@ class NewsSource(BaseModel):
     title: str
     url: str
     published_date: Optional[datetime] = None
-    source_name: Optional[str] = None
-    snippet: Optional[str] = None
+    
     
     class Config:
         json_encoders = {
