@@ -20,8 +20,7 @@ class AIAgent:
             self.llm = ChatGoogleGenerativeAI(
                 model="gemini-2.5-flash",
                 google_api_key=settings.google_api_key,
-                temperature=settings.temperature,
-                convert_system_message_to_human=True
+                temperature=settings.temperature
             )
             logger.info("AI Agent initialized successfully")
         except Exception as e:
@@ -57,10 +56,12 @@ class AIAgent:
                 topic, news_sources, style, max_length, include_hashtags
             )
             
+            messages = HumanMessage(content = post_prompt) 
+
             # Generate post content
             loop = asyncio.get_event_loop()
             response = await loop.run_in_executor(
-                None, lambda: self.llm.invoke([post_prompt])
+                None, lambda: self.llm.invoke([messages])
             )
             
             post_content = response.content.strip()
@@ -94,7 +95,7 @@ class AIAgent:
         style: str,
         max_length: int,
         include_hashtags: bool
-    ) -> SystemMessage:
+    ) -> str:
         """Create prompt for LinkedIn post generation."""
         
         # Prepare news sources text
@@ -137,7 +138,7 @@ class AIAgent:
         Generate the LinkedIn post now:
         """
         
-        return SystemMessage(content=prompt_text)
+        return prompt_text
     
     async def _extract_hashtags(self, post_content: str, topic: str) -> List[str]:
         """Extract or generate relevant hashtags."""

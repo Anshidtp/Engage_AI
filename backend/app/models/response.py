@@ -11,6 +11,11 @@ class NewsSource(BaseModel):
     published_date: Optional[datetime] = None
     source_name: Optional[str] = None
     snippet: Optional[str] = None
+    
+    class Config:
+        json_encoders = {
+            datetime: lambda v: v.isoformat() if v else None
+        }
 
 
 class GeneratePostResponse(BaseModel):
@@ -42,6 +47,11 @@ class GeneratePostResponse(BaseModel):
     word_count: int = Field(description="Word count of generated post")
     
     character_count: int = Field(description="Character count of generated post")
+    
+    class Config:
+        json_encoders = {
+            datetime: lambda v: v.isoformat() if v else None
+        }
 
 
 class ErrorResponse(BaseModel):
@@ -51,3 +61,8 @@ class ErrorResponse(BaseModel):
     code: str = Field(description="Error code")
     details: dict = Field(default_factory=dict, description="Additional error details")
     timestamp: datetime = Field(default_factory=datetime.utcnow)
+    
+    class Config:
+        json_encoders = {
+            datetime: lambda v: v.isoformat() if v else None
+        }
