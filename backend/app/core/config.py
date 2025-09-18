@@ -1,7 +1,6 @@
 import os
 from typing import List, Optional
 from pydantic_settings import BaseSettings
-from pydantic import validator
 
 
 class Settings(BaseSettings):
@@ -16,13 +15,11 @@ class Settings(BaseSettings):
     # API Keys
     google_api_key: str
     serpapi_api_key: Optional[str] = None
-    google_cse_id: Optional[str] = None
+    unsplash_access_key: Optional[str] = None
     
     # # CORS
     # ALLOWED_ORIGINS: List[str] = ["*"]
     
-    # Rate limiting
-    rate_limit_per_minute: int = 10
     
     # News search settings
     max_news_results: int = 5
@@ -31,15 +28,6 @@ class Settings(BaseSettings):
     # AI Generation settings
     max_post_length: int = 3000
     temperature: float = 0.7
-    
-    # @validator("allowed_origins", pre=True)
-    # def assemble_cors_origins(cls, v):
-    #     """Parse CORS origins from string."""
-    #     if isinstance(v, str) and not v.startswith("["):
-    #         return [i.strip() for i in v.split(",")]
-    #     elif isinstance(v, (list, str)):
-    #         return v
-    #     raise ValueError(v)
     
     class Config:
         """Pydantic config."""
