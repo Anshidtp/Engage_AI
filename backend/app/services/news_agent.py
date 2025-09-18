@@ -7,7 +7,7 @@ from serpapi import GoogleSearch
 
 from backend.app.core.config import settings
 from backend.app.core.logging import get_logger
-#from backend.app.models.response import NewsSource
+from backend.app.models.response import NewsSource
 from backend.app.core.exceptions import NewsSearchError, APIKeyError
 
 logger = get_logger(__name__)
@@ -17,7 +17,7 @@ class NewsSearchAgent:
     def __init__(self):
         self.serp_api_key = settings.serpapi_api_key
 
-    async def search_news(self, topic: str, limit: int = 5) -> List[str]:
+    async def search_news(self, topic: str, limit: int = 5) -> List[NewsSource]:
         """
         Search for recent news articles on a topic.
         
@@ -39,7 +39,7 @@ class NewsSearchAgent:
                 return await self._search_with_serpapi(topic, limit)
             else:
                 # Fallback to a simple web scraping approach
-                return await self._search_fallback(topic, limit)
+                return await self._get_fallback_urls(topic, limit)
                 
         except Exception as e:
             logger.error(f"News search failed: {str(e)}")
@@ -70,20 +70,17 @@ class NewsSearchAgent:
             
             news_sources = []
 
+            
             if "news_results" in results:
                 for result in results["news_results"][:limit]:
-                    news_sources.append(result.get("link", ""))
-            
-            # if "news_results" in results:
-            #     for result in results["news_results"][:limit]:
-            #         source = NewsSource(
-            #             title=result.get("title", ""),
-            #             url=result.get("link", ""),
-            #             source_name=result.get("source", ""),
-            #             snippet=result.get("snippet", ""),
-            #             published_date=self._parse_date(result.get("date"))
-            #         )
-            #         news_sources.append(source)
+                    source = NewsSource(
+                        title=result.get("title", ""),
+                        url=result.get("link", ""),
+                        source_name=result.get("source", ""),
+                        snippet=result.get("snippet", ""),
+                        published_date=self._parse_date(result.get("date"))
+                    )
+                    news_sources.append(source)
             
             logger.info(f"Found {len(news_sources)} news articles")
             return news_sources if news_sources else self._get_fallback_urls(topic)
@@ -154,21 +151,21 @@ class NewsSearchAgent:
         
     #     return news_sources
     
-    # def _parse_date(self, date_str: Optional[str]) -> Optional[datetime]:
-    #     """Parse date string to datetime object."""
-    #     if not date_str:
-    #         return None
+    def _parse_date(self, date_str: Optional[str]) -> Optional[datetime]:
+        """Parse date string to datetime object."""
+        if not date_str:
+            return None
             
-    #     try:
-    #         # Handle various date formats
-    #         for fmt in ["%Y-%m-%d", "%Y-%m-%dT%H:%M:%S", "%Y-%m-%dT%H:%M:%SZ"]:
-    #             try:
-    #                 return datetime.strptime(date_str, fmt)
-    #             except ValueError:
-    #                 continue
+        try:
+            # Handle various date formats
+            for fmt in ["%Y-%m-%d", "%Y-%m-%dT%H:%M:%S", "%Y-%m-%dT%H:%M:%SZ"]:
+                try:
+                    return datetime.strptime(date_str, fmt)
+                except ValueError:
+                    continue
                     
-    #         # If no format matches, return None
-    #         return None
+            # If no format matches, return None
+            return None
             
-    #     except Exception:
-    #         return None
+        except Exception:
+            return None

@@ -41,12 +41,10 @@ class AIAgent:
         Args:
             topic: The main topic
             news_sources: List of news sources
-            style: Post style (professional, casual, thought-leadership)
-            max_length: Maximum post length
             include_hashtags: Whether to include hashtags
             
         Returns:
-            Dictionary containing post content, hashtags, and image suggestion
+            Dictionary containing post content, hashtags
         """
         try:
             logger.info(f"Generating LinkedIn post for topic: {topic}")
@@ -68,7 +66,7 @@ class AIAgent:
             
             # Extract hashtags and image suggestion
             hashtags = await self._extract_hashtags(post_content, topic)
-            image_suggestion = await self._generate_image_suggestion(topic, news_sources)
+            
             
             # Clean up the post content (remove hashtags section if present)
             clean_post = self._clean_post_content(post_content)
@@ -76,7 +74,6 @@ class AIAgent:
             result = {
                 "post_content": clean_post,
                 "hashtags": hashtags,
-                "image_suggestion": image_suggestion,
                 "word_count": len(clean_post.split()),
                 "character_count": len(clean_post)
             }
@@ -175,31 +172,7 @@ class AIAgent:
             # Return some generic hashtags based on topic
             return [f"#{topic.replace(' ', '')}", "#LinkedIn", "#Industry", "#Business"]
     
-    async def _generate_image_suggestion(
-        self,
-        topic: str,
-        news_sources: List[NewsSource]
-    ) -> Optional[str]:
-        """Generate image suggestion for the post."""
-        try:
-            image_prompt = SystemMessage(content=f"""
-            Suggest a professional image or visual that would complement a LinkedIn post about "{topic}".
-            Consider the following news context: {news_sources[0].title if news_sources else ""}
-            
-            Provide a brief description of the ideal image/visual in 1-2 sentences.
-            Focus on professional, business-appropriate visuals.
-            """)
-            
-            loop = asyncio.get_event_loop()
-            response = await loop.run_in_executor(
-                None, lambda: self.llm.invoke([image_prompt])
-            )
-            
-            return response.content.strip()
-            
-        except Exception as e:
-            logger.warning(f"Failed to generate image suggestion: {str(e)}")
-            return f"Professional image related to {topic} - consider industry charts, infographics, or relevant stock photos"
+    
     
     def _clean_post_content(self, content: str) -> str:
         """Clean up the generated post content."""
