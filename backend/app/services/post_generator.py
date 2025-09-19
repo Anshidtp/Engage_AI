@@ -1,10 +1,12 @@
 from typing import Dict, Any
 from backend.app.services.linkedin_agent import AIAgent
 from backend.app.services.news_agent import NewsSearchAgent
+from backend.app.services.image_agent import ImageAgent
 from backend.app.models.requests import GeneratePostRequest
 from backend.app.models.response import GeneratePostResponse, NewsSource
 from backend.app.core.logging import get_logger
 from backend.app.core.exceptions import AppException
+from backend.app.models.schema import PostRequest, PostResponse
 
 logger = get_logger(__name__)
 
@@ -15,8 +17,9 @@ class PostGeneratorService:
     def __init__(self):
         self.ai_agent = AIAgent()
         self.news_service = NewsSearchAgent()
+        self.image_service  = ImageAgent()
     
-    async def generate_post(self, request: GeneratePostRequest) -> GeneratePostResponse:
+    async def generate_post(self, request: PostRequest) -> PostResponse:
         """
         Generate a LinkedIn post based on request parameters.
         
@@ -54,20 +57,21 @@ class PostGeneratorService:
             generation_result = await self.ai_agent.generate_linkedin_post(
                 topic=request.topic,
                 news_sources=news_sources,
-                style=request.style or "professional",
-                max_length=request.max_length or 2000,
-                include_hashtags=request.include_hashtags
+                style= "professional",
+                max_length= 2000,
+                include_hashtags= True
             )
+
+            # Step 3: Get image suggestion
+            image_suggestion = await self.image_service.get_image_suggestion(request.topic)
             
-            # Step 3: Create response
-            response = GeneratePostResponse(
+            # Step 4: Create response
+            response = PostResponse(
                 topic=request.topic,
                 linkedin_post=generation_result["post_content"],
                 news_sources=news_sources,
-                image_suggestion=generation_result["image_suggestion"],
-                hashtags=generation_result["hashtags"],
-                word_count=generation_result["word_count"],
-                character_count=generation_result["character_count"]
+                image_suggestion=image_suggestion,
+                
             )
             
             logger.info("Post generation completed successfully")

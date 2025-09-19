@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException,Request,BackgroundTasks
 from typing import Dict, Any
 
-from backend.app.models.requests import GeneratePostRequest
-from backend.app.models.response import GeneratePostResponse, ErrorResponse
+from backend.app.models.response import  ErrorResponse
+from backend.app.models.schema import PostRequest, PostResponse
 from backend.app.services.post_generator import PostGeneratorService
 from backend.app.core.exceptions import AppException,APIKeyError,NewsSearchError
 from backend.app.core.logging import get_logger
@@ -17,23 +17,17 @@ post_service = PostGeneratorService()
 
 @router.post(
     "/generate-post",
-    response_model=GeneratePostResponse,
-    responses={
-        400: {"model": ErrorResponse, "description": "Bad Request"},
-        429: {"model": ErrorResponse, "description": "Rate Limit Exceeded"},
-        500: {"model": ErrorResponse, "description": "Internal Server Error"},
-    }
-)
+    response_model=PostResponse,)
 async def generate_post(
-    request: GeneratePostRequest,
+    request: PostRequest,
     background_tasks: BackgroundTasks,
-) -> GeneratePostResponse:
+) -> PostResponse:
     '''Endpoint to generate a LinkedIn post based on the provided request parameters.'''
 
     try:
         # # Log request metadata
         # metadata = get_request_metadata(http_request)
-        # logger.info(f"Post generation request: {request.topic} from {metadata['client_ip']}")
+        logger.info(f"Post generation request: {request.topic} ")
         
         # Generate post
         result = await post_service.generate_post(request)
@@ -70,16 +64,6 @@ async def generate_post(
             ).dict()
         )
         
-    # except AIGenerationError as e:
-    #     logger.error(f"AI generation error: {str(e)}")
-    #     raise HTTPException(
-    #         status_code=500,
-    #         detail=ErrorResponse(
-    #             error="Failed to generate post content",
-    #             code=e.code,
-    #             details=e.details
-    #         ).dict()
-    #     )
         
     except AppException as e:
         logger.error(f"Application error: {str(e)}")

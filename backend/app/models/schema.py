@@ -1,6 +1,6 @@
 from typing import List
 from pydantic import BaseModel, Field
-
+from backend.app.models.response import NewsSource
 
 class PostRequest(BaseModel):
     """Request model for post generation."""
@@ -10,6 +10,8 @@ class PostRequest(BaseModel):
 class PostResponse(BaseModel):
     """Response model for generated post."""
     topic: str
-    news_sources: List[str]
+    news_sources: List[NewsSource] = Field(
+        description="List of news sources used for generation"
+    )
     linkedin_post: str
     image_suggestion: str = None
