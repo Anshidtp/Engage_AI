@@ -1,2 +1,3 @@
 from app.main import app
-handler = app
+from mangum import Mangum
+handler = Mangum(app, lifespan="off")
