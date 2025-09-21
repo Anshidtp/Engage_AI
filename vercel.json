@@ -1,5 +1,4 @@
 {
-  "devCommand": "uvicorn app.main:app --host 0.0.0.0 --port 8000",
   "builds": [
     {
       "src": "app/main.py",
@@ -14,5 +13,10 @@
   ],
   "env": {
     "PYTHON_PATH": "."
+  },
+  "functions": {
+    "app/main.py": {
+      "maxDuration": 30
+    }
   }
 }
