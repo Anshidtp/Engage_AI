@@ -15,10 +15,7 @@ class Settings(BaseSettings):
     # API Keys
     google_api_key: str
     serpapi_api_key: Optional[str] = None
-    unsplash_access_key: Optional[str] = None
-    
-    # # CORS
-    # ALLOWED_ORIGINS: List[str] = ["*"]
+
     
     
     # News search settings
