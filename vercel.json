@@ -1,22 +1,17 @@
 {
   "builds": [
     {
-      "src": "run.py",
+      "src": "app/main.py",
       "use": "@vercel/python"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "run.py"
+      "dest": "app/main.py"
     }
   ],
   "env": {
     "PYTHON_PATH": "."
-  },
-  "functions": {
-    "app/main.py": {
-      "maxDuration": 30
-    }
   }
 }
