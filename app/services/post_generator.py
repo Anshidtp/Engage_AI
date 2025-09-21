@@ -1,12 +1,11 @@
 from typing import Dict, Any
-from backend.app.services.linkedin_agent import AIAgent
-from backend.app.services.news_agent import NewsSearchAgent
-from backend.app.services.image_agent import ImageAgent
-from backend.app.models.requests import GeneratePostRequest
-from backend.app.models.response import GeneratePostResponse, NewsSource
-from backend.app.core.logging import get_logger
-from backend.app.core.exceptions import AppException
-from backend.app.models.schema import PostRequest, PostResponse
+from app.services.linkedin_agent import AIAgent
+from app.services.news_agent import NewsSearchAgent
+from app.services.image_agent import ImageAgent
+from app.models.response import NewsSource
+from app.core.logging import get_logger
+from app.core.exceptions import AppException
+from app.models.schema import PostRequest, PostResponse
 
 logger = get_logger(__name__)
 

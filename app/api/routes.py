@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException,Request,BackgroundTasks
 from typing import Dict, Any
 
-from backend.app.models.response import  ErrorResponse
-from backend.app.models.schema import PostRequest, PostResponse
-from backend.app.services.post_generator import PostGeneratorService
-from backend.app.core.exceptions import AppException,APIKeyError,NewsSearchError
-from backend.app.core.logging import get_logger
+from app.models.response import ErrorResponse
+from app.models.schema import PostRequest, PostResponse
+from app.services.post_generator import PostGeneratorService
+from app.core.exceptions import AppException,APIKeyError,NewsSearchError
+from app.core.logging import get_logger
 
 
 logger = get_logger(__name__)

@@ -2,8 +2,8 @@ import asyncio
 from typing import Optional
 from serpapi import GoogleSearch
 
-from backend.app.core.config import settings
-from backend.app.core.logging import get_logger
+from app.core.config import settings
+from app.core.logging import get_logger
 
 logger = get_logger(__name__)
 

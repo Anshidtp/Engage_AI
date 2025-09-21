@@ -4,10 +4,10 @@ from langchain_google_genai.chat_models import ChatGoogleGenerativeAI
 from langchain.schema import HumanMessage, SystemMessage
 from langchain.prompts import PromptTemplate
 
-from backend.app.core.config import settings
-from backend.app.core.exceptions import AIGenerationError, APIKeyError
-from backend.app.core.logging import get_logger
-from backend.app.models.response import NewsSource
+from app.core.config import settings
+from app.core.exceptions import AIGenerationError, APIKeyError
+from app.core.logging import get_logger
+from app.models.response import NewsSource
 
 logger = get_logger(__name__)
 

@@ -5,10 +5,10 @@ from contextlib import asynccontextmanager
 import time
 from typing import List 
 
-from backend.app.core.config import settings
-from backend.app.core.logging import setup_logging, get_logger
-from backend.app.core.exceptions import AppException
-from backend.app.api.routes import router as post_router
+from app.core.config import settings
+from app.core.logging import setup_logging, get_logger
+from app.core.exceptions import AppException
+from app.api.routes import router as post_router
 
 setup_logging()
 logger = get_logger(__name__)
@@ -60,4 +60,4 @@ handler = app
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("backend.app.main:app", host ="127.0.0.1", port=8000, reload=True)
+    uvicorn.run("app.main:app", host ="127.0.0.1", port=8000, reload=True)

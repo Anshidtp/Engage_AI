@@ -1,6 +1,6 @@
 from typing import List
 from pydantic import BaseModel, Field
-from backend.app.models.response import NewsSource
+from app.models.response import NewsSource
 
 class PostRequest(BaseModel):
     """Request model for post generation."""
