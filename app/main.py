@@ -13,25 +13,26 @@ from app.api.routes import router as post_router
 setup_logging()
 logger = get_logger(__name__)
 
-# @asynccontextmanager
-# async def lifespan(app: FastAPI):
+@asynccontextmanager
+async def lifespan(app: FastAPI):
      
-#     """Application lifespan events."""
-#     # Startup
-#     logger.info("Starting LinkedIn Post Generator API")
-#     logger.info(f"Debug mode: {settings.debug}")
-#     logger.info(f"Log level: {settings.log_level}")
+    """Application lifespan events."""
+    # Startup
+    logger.info("Starting LinkedIn Post Generator API")
+    logger.info(f"Debug mode: {settings.debug}")
+    logger.info(f"Log level: {settings.log_level}")
     
-#     yield
+    yield
     
-#     # Shutdown
-#     logger.info("Shutting down LinkedIn Post Generator API")
+    # Shutdown
+    logger.info("Shutting down LinkedIn Post Generator API")
 
 
 # Create FastAPI app
 app = FastAPI(
     title=settings.app_name,
-    version=settings.app_version
+    version=settings.app_version,
+    lifespan=lifespan
 )
 
 # CORS middleware
@@ -55,8 +56,8 @@ async def root():
     }
  
 
-handler = app 
+# handler = app 
 
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run("app.main:app", host ="0.0.0.0", port=8000, reload=True)
+# if __name__ == "__main__":
+#     import uvicorn
+#     uvicorn.run("app.main:app", host ="0.0.0.0", port=8000, reload=True)
