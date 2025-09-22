@@ -1,8 +1,7 @@
 # Engage_AI
-AI Agent for Real Time LinkedIn Content Generation
-
-
 A production-ready AI-powered service that generates engaging LinkedIn posts based on recent news using Google Gemini and LangChain.
+
+![Demo](https://github.com/Anshidtp/Engage_AI/blob/main/sample/engage%20aigif.gif)
 
 ## 🚀 Features
 
