@@ -18,7 +18,7 @@ A production-ready AI-powered service that generates engaging LinkedIn posts bas
 - **Backend**: FastAPI (Python)
 - **AI/ML**: Google Gemini API, LangChain
 - **News & Image Search**: SerpAPI (with fallback options)
-- **Deployment**: Vercel
+- **Deployment**: Render
 - **Documentation**: Swagger
 
 ## 📋 Prerequisites
