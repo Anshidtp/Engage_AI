@@ -1,6 +1,8 @@
 # Engage_AI
 A production-ready AI-powered service that generates engaging LinkedIn posts based on recent news using Google Gemini and LangChain.
 
+[DEMO VIDEO]()
+
 ![Demo](https://github.com/Anshidtp/Engage_AI/blob/main/sample/engage%20aigif.gif)
 
 ## 🚀 Features
@@ -75,31 +77,29 @@ curl -X POST "http://localhost:8000/api/v1/generate-post" \
      -d '{"topic": "Artificial Intelligence"}'
 ```
 
-## 🌐 Deployment on Vercel
-
-### 1. Install Vercel CLI
-
+### Deployment on Render
+1. Connect to Render:
 ```bash
-npm install -g vercel
+  - Go to render.com
+  - Create new Web Service
+  - Connect your GitHub repository
 ```
-
-### 2. Deploy
-
+2. Configure Service:
 ```bash
-vercel --prod
+  - Build Command: pip install -r requirements.txt
+  - Start Command: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+
 ```
-
-### 3. Set Environment Variables
+3. Set Environment Variables in Render dashboard:
 
 ```bash
-vercel env add GOOGLE_API_KEY
-vercel env add SERPAPI_API_KEY
+  GOOGLE_API_KEY: Your Gemini API key
+  SERPAPI_API_KEY: Your SerpAPI key
 ```
-
-### 4. Redeploy
-
+- Production URL
 ```bash
-vercel --prod
+Your app will be available at: https://your-app-name.onrender.com
+
 ```
 
 ## 📊 API Reference
@@ -185,3 +185,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 1. **"Service configuration error"**: Check your `GOOGLE_API_KEY` environment variable
 2. **"Failed to search news"**: Verify your `SERPAPI_API_KEY` or check network connectivity
+
