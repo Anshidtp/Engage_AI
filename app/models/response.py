@@ -55,14 +55,12 @@ class GeneratePostResponse(BaseModel):
 
 
 class ErrorResponse(BaseModel):
-    """Error response model."""
-    
     error: str = Field(description="Error message")
     code: str = Field(description="Error code")
     details: dict = Field(default_factory=dict, description="Additional error details")
-    timestamp: datetime = Field(default_factory=datetime.utcnow)
+    timestamp: str = Field(default_factory=lambda: datetime.utcnow().isoformat())
     
     class Config:
         json_encoders = {
-            datetime: lambda v: v.isoformat() if v else None
+            datetime: lambda v: v.isoformat()
         }

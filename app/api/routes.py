@@ -1,5 +1,6 @@
-from fastapi import APIRouter, Depends, HTTPException,Request,BackgroundTasks
+from fastapi import APIRouter, HTTPException,Request,BackgroundTasks
 from typing import Dict, Any
+from datetime import datetime
 
 from app.models.response import ErrorResponse
 from app.models.schema import PostRequest, PostResponse
@@ -72,7 +73,8 @@ async def generate_post(
             detail=ErrorResponse(
                 error=e.message,
                 code=e.code,
-                details=e.details
+                details=e.details,
+                timestamp=datetime.utcnow().isoformat()  # Convert to ISO format string
             ).dict()
         )
         
@@ -83,7 +85,8 @@ async def generate_post(
             detail=ErrorResponse(
                 error="An unexpected error occurred",
                 code="INTERNAL_ERROR",
-                details={"message": str(e)}
+                details={"message": str(e)},
+                timestamp=datetime.utcnow().isoformat()  # Convert to ISO format string
             ).dict()
         )
 

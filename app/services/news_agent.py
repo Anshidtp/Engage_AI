@@ -71,11 +71,12 @@ class NewsSearchAgent:
             
             if "news_results" in results:
                 for result in results["news_results"][:limit]:
+                    # Explicitly create NewsSource objects
                     source = NewsSource(
-                        title=result.get("title", ""),
-                        url=result.get("link", ""),
-                        source_name=result.get("source", ""),
-                        snippet=result.get("snippet", ""),
+                        title=str(result.get("title", "")),
+                        url=str(result.get("link", "")),
+                        source_name=str(result.get("source", "")),
+                        snippet=str(result.get("snippet", "")),
                         published_date=self._parse_date(result.get("date"))
                     )
                     news_sources.append(source)
