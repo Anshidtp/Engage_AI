@@ -1,7 +1,8 @@
 # Engage_AI
 A production-ready AI-powered service that generates engaging LinkedIn posts based on recent news using Google Gemini and LangChain.
 
-YYou can watch the Demo Here: [ENGAGE_aI](https://github.com/Anshidtp/Engage_AI/blob/main/sample/Engage_ai.mp4)
+- You can watch the Demo Here: [ENGAGE_aI](https://github.com/Anshidtp/Engage_AI/blob/main/sample/Engage_ai.mp4)
+- For Live Demo: [Engage_ai](https://engage-ai-wrzr.onrender.com)
 
 ![Demo](https://github.com/Anshidtp/Engage_AI/blob/main/sample/engage%20aigif.gif)
 
