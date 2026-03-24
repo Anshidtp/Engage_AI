@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
 from datetime import datetime
 from pydantic import BaseModel, Field
 
@@ -16,6 +16,15 @@ class NewsSource(BaseModel):
         json_encoders = {
             datetime: lambda v: v.isoformat() if v else None
         }
+
+class ProcessingMetadata(BaseModel):
+    """Metadata about the LangGraph workflow processing."""
+    
+    search_attempts: int = Field(description="Number of news search attempts")
+    generation_attempts: int = Field(description="Number of content generation attempts")
+    error_messages: List[str] = Field(default_factory=list, description="Any error messages during processing")
+    news_analysis: Optional[Dict[str, Any]] = Field(description="News analysis results")
+    content_outline: Optional[Dict[str, Any]] = Field(description="Content outline used")
 
 
 class GeneratePostResponse(BaseModel):
@@ -47,6 +56,14 @@ class GeneratePostResponse(BaseModel):
     word_count: int = Field(description="Word count of generated post")
     
     character_count: int = Field(description="Character count of generated post")
+
+    # Enhanced LangGraph-specific fields
+    quality_score: Optional[float] = Field(
+        default=None,
+        description="AI-assessed quality score (1-10)",
+        ge=1.0,
+        le=10.0
+    )
     
     class Config:
         json_encoders = {

@@ -9,6 +9,8 @@ from app.core.config import settings
 from app.core.logging import setup_logging, get_logger
 from app.core.exceptions import AppException
 from app.api.routes import router as post_router
+from app.api.pro_router import router as pro_router
+ 
 
 setup_logging()
 logger = get_logger(__name__)
@@ -45,6 +47,7 @@ app.add_middleware(
 )
 # Include API router
 app.include_router(post_router)
+app.include_router(pro_router)
 
 
 # Root endpoint
