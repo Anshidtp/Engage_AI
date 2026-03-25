@@ -20,14 +20,13 @@ const Hero = () => {
       </div>
       
       <h1 className="text-5xl md:text-6xl font-bold mb-4">
-        <span className="gradient-text">AI-Powered</span>
+        <span className="gradient-text">Engage AI</span>
         <br />
-        LinkedIn Post Generator
       </h1>
       
       <p className="text-xl text-slate-600 mb-6 max-w-2xl mx-auto">
         Transform your ideas into engaging LinkedIn content in seconds with our 
-        advanced LangGraph-powered AI workflow
+        advanced AI powered workflow
       </p>
       
       <div className="flex flex-wrap justify-center gap-6 text-sm">

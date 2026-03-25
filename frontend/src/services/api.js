@@ -10,16 +10,16 @@ const api = axios.create({
 });
 
 export const generatePost = async (data, endpoint = 'standard') => {
-  const url = endpoint === 'enhanced' 
-    ? '/api/v1/generate-post-enhanced' 
-    : '/api/v1/generate-post';
+  const url = endpoint === 'pro' 
+    ? '/posts/generate-post-pro' 
+    : '/posts/generate-post';
   
   const response = await api.post(url, data);
   return response.data;
 };
 
 export const checkHealth = async () => {
-  const response = await api.get('/api/v1/health');
+  const response = await api.get('/posts/health');
   return response.data;
 };
 

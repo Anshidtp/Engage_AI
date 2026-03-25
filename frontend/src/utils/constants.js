@@ -6,27 +6,41 @@ export const STYLE_OPTIONS = [
   { value: 'thought-leadership', label: 'Thought Leadership', icon: '💡', description: 'Expert insights' },
 ];
 
-export const ENDPOINT_OPTIONS = [
+export const PLAN_OPTIONS = [
   { 
     value: 'standard', 
     label: 'Standard', 
     icon: '⚡', 
-    description: '~15s response',
-    quality: '7.2/10 avg'
+    badge: 'Fast',
+    description: '~15-20s response',
+    quality: '7-8/10',
+    features: ['Quick generation', 'Good quality', 'Perfect for volume']
   },
   { 
-    value: 'enhanced', 
-    label: 'Enhanced (LangGraph)', 
+    value: 'pro', 
+    label: 'Pro', 
     icon: '🚀', 
-    description: '~30s response',
-    quality: '8.5/10 avg'
+    badge: 'Premium',
+    description: '~30-40s response',
+    quality: '8.5-9.5/10',
+    features: ['Advanced workflow', 'Quality refinement', 'Best quality']
   },
 ];
 
-export const LOADING_MESSAGES = [
-  '🔍 Searching for latest news...',
-  '📊 Analyzing industry trends...',
-  '✍️ Crafting your content...',
-  '🎯 Optimizing for engagement...',
-  '✨ Adding finishing touches...',
-];
+export const LOADING_MESSAGES = {
+  standard: [
+    '⚡ Searching latest news...',
+    '✍️ Generating your post...',
+    '🎯 Optimizing content...',
+    '✨ Finalizing...',
+  ],
+  pro: [
+    '🔍 Searching news sources...',
+    '📊 Analyzing trends & insights...',
+    '📝 Creating content outline...',
+    '✍️ Crafting your post...',
+    '🎯 Checking quality...',
+    '🔄 Refining content...',
+    '✨ Adding final touches...',
+  ]
+};

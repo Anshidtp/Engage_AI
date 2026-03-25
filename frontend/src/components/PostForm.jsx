@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Send, Settings } from 'lucide-react';
-import { STYLE_OPTIONS, ENDPOINT_OPTIONS } from '../utils/constants';
+import { Send, Sparkles,Settings } from 'lucide-react';
+import { STYLE_OPTIONS } from '../utils/constants';
+import PlanSelector from './PlanSelector';
 
 const PostForm = ({ onSubmit, loading }) => {
   const [formData, setFormData] = useState({
     topic: '',
     style: 'professional',
-    endpoint: 'enhanced',
+    plan: 'standard',
     includeHashtags: true,
     maxLength: 2000,
   });
@@ -48,6 +49,13 @@ const PostForm = ({ onSubmit, loading }) => {
           </p>
         </div>
 
+        {/* Plan Selection */}
+        <PlanSelector
+          selectedPlan={formData.plan}
+          onSelectPlan={(plan) => setFormData({ ...formData, plan })}
+          disabled={loading}
+        />
+
         {/* Style Selection */}
         <div>
           <label className="block text-sm font-semibold text-slate-700 mb-3">
@@ -71,41 +79,6 @@ const PostForm = ({ onSubmit, loading }) => {
                 <div className="text-2xl mb-2">{option.icon}</div>
                 <div className="font-semibold text-slate-800">{option.label}</div>
                 <div className="text-xs text-slate-500 mt-1">{option.description}</div>
-              </motion.button>
-            ))}
-          </div>
-        </div>
-
-        {/* Endpoint Selection */}
-        <div>
-          <label className="block text-sm font-semibold text-slate-700 mb-3">
-            Generation mode 🚀
-          </label>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {ENDPOINT_OPTIONS.map((option) => (
-              <motion.button
-                key={option.value}
-                type="button"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => setFormData({ ...formData, endpoint: option.value })}
-                className={`p-4 rounded-xl border-2 transition-all duration-300 text-left ${
-                  formData.endpoint === option.value
-                    ? 'border-accent-500 bg-accent-50 shadow-lg'
-                    : 'border-slate-200 bg-white hover:border-accent-300'
-                }`}
-                disabled={loading}
-              >
-                <div className="flex items-start justify-between">
-                  <div>
-                    <div className="text-2xl mb-2">{option.icon}</div>
-                    <div className="font-semibold text-slate-800">{option.label}</div>
-                    <div className="text-xs text-slate-500 mt-1">{option.description}</div>
-                  </div>
-                  <div className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full font-medium">
-                    {option.quality}
-                  </div>
-                </div>
               </motion.button>
             ))}
           </div>
@@ -178,7 +151,7 @@ const PostForm = ({ onSubmit, loading }) => {
               >
                 <Sparkles className="w-5 h-5" />
               </motion.div>
-              <span>Generating...</span>
+              <span>Generating with {formData.plan === 'pro' ? 'Pro' : 'Standard'}...</span>
             </>
           ) : (
             <>

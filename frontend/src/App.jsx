@@ -8,14 +8,14 @@ import ErrorMessage from './components/ErrorMessage';
 import { usePostGenerator } from './hooks/usePostGenerator';
 
 function App() {
-  const { loading, generatedPost, error, generate, reset } = usePostGenerator();
+  const { loading, generatedPost, error, generate, reset, selectedPlan } = usePostGenerator();
 
   return (
     <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
       <Toaster 
         position="top-right"
         toastOptions={{
-          duration: 3000,
+          duration: 4000,
           style: {
             background: '#fff',
             color: '#334155',
@@ -28,12 +28,12 @@ function App() {
         <Hero />
 
         <AnimatePresence mode="wait">
-          {!generatedPost && !loading && (
-            <PostForm onSubmit={generate} loading={loading} />
+          {!generatedPost && !loading && !error && (
+            <PostForm key="form" onSubmit={generate} loading={loading} />
           )}
 
           {loading && (
-            <LoadingAnimation key="loading" />
+            <LoadingAnimation key="loading" plan={selectedPlan} />
           )}
 
           {error && !loading && (
@@ -41,7 +41,12 @@ function App() {
           )}
 
           {generatedPost && !loading && (
-            <GeneratedPost key="result" data={generatedPost} onReset={reset} />
+            <GeneratedPost 
+              key="result" 
+              data={generatedPost} 
+              onReset={reset}
+              plan={selectedPlan}
+            />
           )}
         </AnimatePresence>
 
@@ -49,12 +54,11 @@ function App() {
         <footer className="mt-16 text-center text-sm text-slate-500">
           <p>
             Powered by{' '}
-            <span className="font-semibold text-primary-600">LangGraph</span>,{' '}
-            <span className="font-semibold text-accent-600">Google Gemini</span>, and{' '}
-            <span className="font-semibold text-purple-600">LangChain</span>
+            <span className="font-semibold text-accent-600">Agentic AI System </span>
+            
           </p>
           <p className="mt-2">
-            Built with ❤️ for professional content creators
+            Choose Standard for speed or Pro for premium quality 🚀
           </p>
         </footer>
       </div>
