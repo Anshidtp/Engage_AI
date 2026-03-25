@@ -283,7 +283,6 @@ class LangGraphNodes:
                 state.get("refined_post", state.get("draft_post", "")),
                 state.get("news_analysis", {})
             )
-            logger.info(f"Generated prompt: {hashtag_prompt.content}")
             
             # Generate hashtags
             response = await self.llm.ainvoke([

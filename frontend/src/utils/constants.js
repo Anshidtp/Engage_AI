@@ -12,8 +12,8 @@ export const PLAN_OPTIONS = [
     label: 'Standard', 
     icon: '⚡', 
     badge: 'Fast',
-    description: '~15-20s response',
-    quality: '7-8/10',
+    description: '~10-15s response',
+    quality: '6-7/10',
     features: ['Quick generation', 'Good quality', 'Perfect for volume']
   },
   { 
@@ -21,8 +21,8 @@ export const PLAN_OPTIONS = [
     label: 'Pro', 
     icon: '🚀', 
     badge: 'Premium',
-    description: '~30-40s response',
-    quality: '8.5-9.5/10',
+    description: '~20-40s response',
+    quality: '8-9.5/10',
     features: ['Advanced workflow', 'Quality refinement', 'Best quality']
   },
 ];
