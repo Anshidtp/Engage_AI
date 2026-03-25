@@ -7,6 +7,8 @@ from app.models.schema import PostRequest, PostResponse
 from app.services.post_generator import PostGeneratorService
 from app.core.exceptions import AppException,APIKeyError,NewsSearchError
 from app.core.logging import get_logger
+from app.models.requests import GeneratePostRequest
+from app.models.response import GeneratePostResponse
 
 
 logger = get_logger(__name__)
@@ -18,11 +20,11 @@ post_service = PostGeneratorService()
 
 @router.post(
     "/generate-post",
-    response_model=PostResponse,)
+    response_model=GeneratePostResponse,)
 async def generate_post(
-    request: PostRequest,
+    request: GeneratePostRequest,
     background_tasks: BackgroundTasks,
-) -> PostResponse:
+) -> GeneratePostResponse:
     '''Endpoint to generate a LinkedIn post based on the provided request parameters.'''
 
     try:

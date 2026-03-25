@@ -6,6 +6,8 @@ from app.models.response import NewsSource
 from app.core.logging import get_logger
 from app.core.exceptions import AppException
 from app.models.schema import PostRequest, PostResponse
+from app.models.requests import GeneratePostRequest
+from app.models.response import GeneratePostResponse, ErrorResponse
 
 logger = get_logger(__name__)
 
@@ -18,7 +20,7 @@ class PostGeneratorService:
         self.news_service = NewsSearchAgent()
         self.image_service  = ImageAgent()
     
-    async def generate_post(self, request: PostRequest) -> PostResponse:
+    async def generate_post(self, request: GeneratePostRequest) -> GeneratePostResponse:
         """
         Generate a LinkedIn post based on request parameters.
         
@@ -56,7 +58,7 @@ class PostGeneratorService:
             generation_result = await self.ai_agent.generate_linkedin_post(
                 topic=request.topic,
                 news_sources=news_sources,
-                style= "professional",
+                style= request.style or "professional",
                 max_length= 2000,
                 include_hashtags= True
             )
@@ -65,12 +67,15 @@ class PostGeneratorService:
             image_suggestion = await self.image_service.get_image_suggestion(request.topic)
             
             # Step 4: Create response
-            response = PostResponse(
+            response = GeneratePostResponse(
                 topic=request.topic,
                 linkedin_post=generation_result["post_content"],
                 news_sources=news_sources,
                 image_suggestion=image_suggestion,
-                
+                hashtags=generation_result.get("hashtags", []),
+                word_count=generation_result.get("word_count", 0),
+                character_count=generation_result.get("character_count", 0),
+                quality_score=None  
             )
             
             logger.info("Post generation completed successfully")
